@@ -28,4 +28,17 @@ public class ShoppingCart {
         }
         return suma;
     }
+    public boolean updateDuplicity(ShoppingCartItem newItem){
+        for (ShoppingCartItem item: items
+             ) {
+            if (newItem.getName().equals(item.getName()) && newItem.getPricePerPiece() == item.getPricePerPiece()) {
+                item.setPieces(item.getPieces() + newItem.getPieces());
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
 }

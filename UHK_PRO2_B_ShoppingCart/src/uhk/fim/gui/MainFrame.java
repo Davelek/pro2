@@ -125,7 +125,11 @@ public class MainFrame extends JFrame implements ActionListener {
             // Vytvořit novou položku
             ShoppingCartItem item = new ShoppingCartItem(txtInputName.getText(), doubleZText, (int)spInputPieces.getValue());
             // Přidat položku do košíku
-            shoppingCart.addItem(item);
+            if (shoppingCart.updateDuplicity(item)){
+
+            }else{
+                shoppingCart.addItem(item);
+            }
             DecimalFormat f = new DecimalFormat("##.00");
             lblTotalPrice.setText("Celková cena: "+f.format(shoppingCart.getTotalPrice())+" Kč");
             // Refreshnout tabulku

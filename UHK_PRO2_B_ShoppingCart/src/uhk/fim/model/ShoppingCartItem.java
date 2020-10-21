@@ -17,6 +17,7 @@ public class ShoppingCartItem {
         return totalPrize;
     }
 
+
     public String getName() {
         return name;
     }
@@ -39,5 +40,6 @@ public class ShoppingCartItem {
 
     public void setPieces(int pieces) {
         this.pieces = pieces;
+        this.totalPrize = pricePerPiece*pieces;
     }
 }
