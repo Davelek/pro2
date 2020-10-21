@@ -1,3 +1,5 @@
+<h1>David Mašek</h1>
+<hr>
 <h1>Shopping cart</h1>
 <p>Projekt Shopping cart pro cvičení - <b>ÚT 16:35 - 18:10</b></p>
 

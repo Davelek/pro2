@@ -14,7 +14,7 @@ public class ShoppingCart {
         return items;
     }
 
-    public void setItems(List<ShoppingCartItem> items) {
-        this.items = items;
+    public void addItem(ShoppingCartItem item) {
+        this.items.add(item);
     }
 }
