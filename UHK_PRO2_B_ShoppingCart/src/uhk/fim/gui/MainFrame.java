@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 
 public class MainFrame extends JFrame implements ActionListener {
     MainFrame mainFrame;
@@ -125,7 +126,8 @@ public class MainFrame extends JFrame implements ActionListener {
             ShoppingCartItem item = new ShoppingCartItem(txtInputName.getText(), doubleZText, (int)spInputPieces.getValue());
             // Přidat položku do košíku
             shoppingCart.addItem(item);
-            lblTotalPrice.setText("Celková cena: "+Math.round(shoppingCart.getTotalPrice())+" Kč");
+            DecimalFormat f = new DecimalFormat("##.00");
+            lblTotalPrice.setText("Celková cena: "+f.format(shoppingCart.getTotalPrice())+" Kč");
             // Refreshnout tabulku
             shoppingCartTableModel.fireTableDataChanged();
             JOptionPane.showMessageDialog(mainFrame, "Super! Přidáno.", "Úspěch", JOptionPane.INFORMATION_MESSAGE);

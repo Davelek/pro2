@@ -21,10 +21,10 @@ public class ShoppingCart {
 
     public double getTotalPrice(){
 
-        double suma = 0;
+        double suma = 0.00;
         for (ShoppingCartItem item: items
         ) {
-            suma += item.getPricePerPiece()*item.getPieces();
+            suma += item.getTotalPrize();
         }
         return suma;
     }
