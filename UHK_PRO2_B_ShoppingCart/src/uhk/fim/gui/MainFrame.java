@@ -103,22 +103,20 @@ public class MainFrame extends JFrame implements ActionListener {
                 return;
             }
             Double doubleZText = 0.0;
-            boolean proslo = false;
+
             try {
                 doubleZText = Double.parseDouble(txtInputPricePerPiece.getText());
-                proslo = true;
+
                // System.out.println(doubleZText);
             }catch (Exception e) {
                 try {
                     doubleZText = Double.parseDouble(txtInputPricePerPiece.getText().split(",")[0] + "." + txtInputPricePerPiece.getText().split(",")[1]);
-                    proslo = true;
+
 
                 }catch (Exception f){
+                    JOptionPane.showMessageDialog(mainFrame, "Nezadal jste správně cena za kus", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
-            }
-            if (!proslo){
-                JOptionPane.showMessageDialog(mainFrame, "Nezadal jste správně cena za kus", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
             }
 
 
