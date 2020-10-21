@@ -17,4 +17,13 @@ public class ShoppingCart {
     public void addItem(ShoppingCartItem item) {
         this.items.add(item);
     }
+    public double getTotalPrice(){
+
+        double suma = 0;
+        for (ShoppingCartItem item: items
+        ) {
+            suma += item.getPricePerPiece()*item.getPieces();
+        }
+        return suma;
+    }
 }
