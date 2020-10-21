@@ -96,8 +96,33 @@ public class MainFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent actionEvent) {
         // Metoda se volá pro každé tlačítko, musíme tedy rozhodnout, co se má skutečně stát pro konkrétní tlačítka
         if(actionEvent.getSource() == btnInputAdd) {
+            boolean nazev = txtInputName.getText().length() > 0;
+            if (!nazev){
+                JOptionPane.showMessageDialog(mainFrame, "Nezadal jste název", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            Double doubleZText = 0.0;
+            boolean proslo = false;
+            try {
+                doubleZText = Double.parseDouble(txtInputPricePerPiece.getText());
+                proslo = true;
+               // System.out.println(doubleZText);
+            }catch (Exception e) {
+                try {
+                    doubleZText = Double.parseDouble(txtInputPricePerPiece.getText().split(",")[0] + "." + txtInputPricePerPiece.getText().split(",")[1]);
+                    proslo = true;
+
+                }catch (Exception f){
+                }
+            }
+            if (!proslo){
+                JOptionPane.showMessageDialog(mainFrame, "Nezadal jste správně cena za kus", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+
             // Vytvořit novou položku
-            ShoppingCartItem item = new ShoppingCartItem(txtInputName.getText(), Double.parseDouble(txtInputPricePerPiece.getText()), (int)spInputPieces.getValue());
+            ShoppingCartItem item = new ShoppingCartItem(txtInputName.getText(), doubleZText, (int)spInputPieces.getValue());
             // Přidat položku do košíku
             shoppingCart.addItem(item);
             lblTotalPrice.setText("Celková cena: "+Math.round(shoppingCart.getTotalPrice())+" Kč");
