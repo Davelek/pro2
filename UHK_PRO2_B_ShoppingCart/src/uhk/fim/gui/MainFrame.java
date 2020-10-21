@@ -18,6 +18,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
     ShoppingCart shoppingCart;
     ShoppingCartTableModel shoppingCartTableModel;
+    JLabel lblTotalPrice = new JLabel("Celková cena: 0,00 Kč");
 
     public MainFrame(int width, int height) {
         super("PRO2 - Shopping cart");
@@ -70,7 +71,7 @@ public class MainFrame extends JFrame implements ActionListener {
         panelInputs.add(btnInputAdd);
 
         // *** Patička ***
-        JLabel lblTotalPrice = new JLabel("Celková cena: 0,00 Kč");
+
         panelFooter.add(lblTotalPrice, BorderLayout.WEST);
 
         // *** Tabulka ***
@@ -99,6 +100,7 @@ public class MainFrame extends JFrame implements ActionListener {
             ShoppingCartItem item = new ShoppingCartItem(txtInputName.getText(), Double.parseDouble(txtInputPricePerPiece.getText()), (int)spInputPieces.getValue());
             // Přidat položku do košíku
             shoppingCart.addItem(item);
+            lblTotalPrice.setText("Celková cena: "+Math.round(shoppingCart.getTotalPrice())+" Kč");
             // Refreshnout tabulku
             shoppingCartTableModel.fireTableDataChanged();
             JOptionPane.showMessageDialog(mainFrame, "Super! Přidáno.", "Úspěch", JOptionPane.INFORMATION_MESSAGE);
