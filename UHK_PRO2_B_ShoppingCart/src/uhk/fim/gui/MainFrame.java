@@ -123,9 +123,7 @@ public class MainFrame extends JFrame implements ActionListener {
             // Vytvořit novou položku
             ShoppingCartItem item = new ShoppingCartItem(txtInputName.getText(), doubleZText, (int)spInputPieces.getValue());
             // Přidat položku do košíku
-            if (shoppingCart.updateDuplicity(item)){
-
-            }else{
+            if (!shoppingCart.updateDuplicity(item)){
                 shoppingCart.addItem(item);
             }
             DecimalFormat f = new DecimalFormat("##.00");
