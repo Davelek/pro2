@@ -57,6 +57,13 @@ public class ShoppingCartTableModel extends AbstractTableModel {
         }
     }
 
+  /*  @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        switch (columnIndex){
+
+        }
+    }*/
+
     public void setShoppingCart(ShoppingCart shoppingCart) {
         this.shoppingCart = shoppingCart;
     }

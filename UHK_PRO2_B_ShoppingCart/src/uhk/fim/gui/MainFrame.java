@@ -19,7 +19,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
     ShoppingCart shoppingCart;
     ShoppingCartTableModel shoppingCartTableModel;
-    JLabel lblTotalPrice = new JLabel("Celková cena: 0,00 Kč");
+    JLabel lblTotalPrice = new JLabel();
 
     public MainFrame(int width, int height) {
         super("PRO2 - Shopping cart");
@@ -40,6 +40,10 @@ public class MainFrame extends JFrame implements ActionListener {
         // Vytvoříme hlavní panel, do kterého budeme přidávat další (pod)panely.
         // Naším cílem při tvorbě GUI, je snaha jednotlivé komponenty zanořovat.
         JPanel panelMain = new JPanel(new BorderLayout());
+
+        //menubar
+
+        createMenuBar();
 
         // Vytvoříme další 3 panely. Panel pro prvky formuláře pro přidání položky.
         // Panel pro tabulku a panel pro patičku.
@@ -72,7 +76,7 @@ public class MainFrame extends JFrame implements ActionListener {
         panelInputs.add(btnInputAdd);
 
         // *** Patička ***
-
+        updateFooter();
         panelFooter.add(lblTotalPrice, BorderLayout.WEST);
 
         // *** Tabulka ***
@@ -91,46 +95,85 @@ public class MainFrame extends JFrame implements ActionListener {
         add(panelMain);
     }
 
+    private void createMenuBar() {
+    JMenuBar menuBar = new JMenuBar();
+    JMenu fileMenu = new JMenu("Soubor");
+    fileMenu.add(new AbstractAction("Nový nákupní seznam") {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
+    });
+        fileMenu.add(new AbstractAction("Otevřít") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        fileMenu.add(new AbstractAction("Uložit") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+    menuBar.add(fileMenu);
+
+    JMenu aboutMenu = new JMenu("O programu");
+    menuBar.add(aboutMenu);
+
+
+
+
+        setJMenuBar(menuBar);
+
+    }
+
     // Při kliknutí na jakékoliv tlačítko se zavolá tato metoda.
     // Toho jsme docílili implementování rozhraní ActionListener a nastavením tlačítek např. btnInputAdd.addActionListener(this);
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         // Metoda se volá pro každé tlačítko, musíme tedy rozhodnout, co se má skutečně stát pro konkrétní tlačítka
         if(actionEvent.getSource() == btnInputAdd) {
-            boolean nazev = txtInputName.getText().length() > 0;
-            if (!nazev){
-                JOptionPane.showMessageDialog(mainFrame, "Nezadal jste název", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            Double doubleZText = 0.0;
-
-            try {
-                doubleZText = Double.parseDouble(txtInputPricePerPiece.getText());
-
-               // System.out.println(doubleZText);
-            }catch (Exception e) {
-                try {
-                    doubleZText = Double.parseDouble(txtInputPricePerPiece.getText().split(",")[0] + "." + txtInputPricePerPiece.getText().split(",")[1]);
-
-
-                }catch (Exception f){
-                    JOptionPane.showMessageDialog(mainFrame, "Nezadal jste správně cena za kus", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-            }
-
-
-            // Vytvořit novou položku
-            ShoppingCartItem item = new ShoppingCartItem(txtInputName.getText(), doubleZText, (int)spInputPieces.getValue());
-            // Přidat položku do košíku
-            if (!shoppingCart.updateDuplicity(item)){
-                shoppingCart.addItem(item);
-            }
-            DecimalFormat f = new DecimalFormat("##.00");
-            lblTotalPrice.setText("Celková cena: "+f.format(shoppingCart.getTotalPrice())+" Kč");
-            // Refreshnout tabulku
-            shoppingCartTableModel.fireTableDataChanged();
-            JOptionPane.showMessageDialog(mainFrame, "Super! Přidáno.", "Úspěch", JOptionPane.INFORMATION_MESSAGE);
+           addProduct();
         }
+    }
+    private void addProduct(){
+        boolean nazev = txtInputName.getText().trim().isEmpty();
+        if (nazev){
+            JOptionPane.showMessageDialog(mainFrame, "Nezadal jste název", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Double doubleZText = 0.0;
+
+        try {
+            doubleZText = Double.parseDouble(txtInputPricePerPiece.getText().replace(",","."));
+
+
+            // System.out.println(doubleZText);
+        }catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(mainFrame, "Nezadal jste správně cena za kus", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+        }
+
+
+        // Vytvořit novou položku
+        ShoppingCartItem item = new ShoppingCartItem(txtInputName.getText(), doubleZText, (int)spInputPieces.getValue());
+        // Přidat položku do košíku
+       // if (!shoppingCart.updateDuplicity(item)){
+            shoppingCart.addItem(item);
+       // }
+        updateFooter();
+        // Refreshnout tabulku
+        shoppingCartTableModel.fireTableDataChanged();
+        JOptionPane.showMessageDialog(mainFrame, "Super! Přidáno.", "Úspěch", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void updateFooter(){
+        //double roundedPrize =Math.round((shoppingCart.getTotalPrice() * 100)/100);
+
+       // DecimalFormat f = new DecimalFormat("##.00");
+       // f.format(shoppingCart.getTotalPrice())
+        lblTotalPrice.setText("Celková cena: "+String.format("%.2f" , shoppingCart.getTotalPrice())+" Kč");
     }
 }

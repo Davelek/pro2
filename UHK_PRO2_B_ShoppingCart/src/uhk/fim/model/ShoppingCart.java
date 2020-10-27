@@ -14,8 +14,17 @@ public class ShoppingCart {
         return items;
     }
 
-    public void addItem(ShoppingCartItem item) {
-        this.items.add(item);
+    public void addItem(ShoppingCartItem newItem) {
+
+        for (ShoppingCartItem item: items
+        ) {
+            if (newItem.getName().equals(item.getName()) && newItem.getPricePerPiece() == item.getPricePerPiece()) {
+                item.setPieces(item.getPieces() + newItem.getPieces());
+               return;
+            }
+        }
+
+        this.items.add(newItem);
     }
 
 
@@ -28,16 +37,11 @@ public class ShoppingCart {
         }
         return suma;
     }
-    public boolean updateDuplicity(ShoppingCartItem newItem){
-        for (ShoppingCartItem item: items
-             ) {
-            if (newItem.getName().equals(item.getName()) && newItem.getPricePerPiece() == item.getPricePerPiece()) {
-                item.setPieces(item.getPieces() + newItem.getPieces());
-                return true;
-            }
-        }
+/*    public boolean updateDuplicity(ShoppingCartItem newItem){
+
         return false;
-    }
+    }*/
+
 
 
 

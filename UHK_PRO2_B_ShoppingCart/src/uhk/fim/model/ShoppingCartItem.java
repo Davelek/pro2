@@ -4,17 +4,17 @@ public class ShoppingCartItem {
     private String name;
     private double pricePerPiece;
     private int pieces;
-    private double totalPrize;
+
 
     public ShoppingCartItem(String name, double pricePerPiece, int pieces) {
         this.name = name;
         this.pricePerPiece = pricePerPiece;
         this.pieces = pieces;
-        this.totalPrize = pricePerPiece*pieces;
+
     }
 
     public double getTotalPrize() {
-        return totalPrize;
+        return pricePerPiece*pieces;
     }
 
 
@@ -40,6 +40,6 @@ public class ShoppingCartItem {
 
     public void setPieces(int pieces) {
         this.pieces = pieces;
-        this.totalPrize = pricePerPiece*pieces;
+
     }
 }
