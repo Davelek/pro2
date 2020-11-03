@@ -7,6 +7,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DecimalFormat;
 
 public class MainFrame extends JFrame implements ActionListener {
@@ -113,7 +116,7 @@ public class MainFrame extends JFrame implements ActionListener {
         fileMenu.add(new AbstractAction("Uložit") {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+            saveFileCsv();
             }
         });
 
@@ -175,5 +178,28 @@ public class MainFrame extends JFrame implements ActionListener {
        // DecimalFormat f = new DecimalFormat("##.00");
        // f.format(shoppingCart.getTotalPrice())
         lblTotalPrice.setText("Celková cena: "+String.format("%.2f" , shoppingCart.getTotalPrice())+" Kč");
+    }
+
+    private void saveFileCsv(){
+        JFileChooser fc = new JFileChooser();
+
+      if(fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
+        String fileName = fc.getSelectedFile().getAbsolutePath();
+        try (BufferedWriter  bw = new BufferedWriter(new FileWriter(fileName,true));){
+
+            for (ShoppingCartItem item: shoppingCart.getItems()
+                 ) {
+                bw.write(item.getName() + ";" + item.getPricePerPiece() + ";" + item.getPieces());
+                bw.newLine();
+            }
+            bw.close();
+        }catch (IOException e){
+            JOptionPane.showMessageDialog(this,"došlo k chybě", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+
+      }
+
+
     }
 }
