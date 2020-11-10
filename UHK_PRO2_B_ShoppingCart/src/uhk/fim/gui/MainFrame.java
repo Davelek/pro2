@@ -1,5 +1,9 @@
 package uhk.fim.gui;
 
+import com.google.gson.Gson;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentFactory;
+import org.dom4j.io.SAXReader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -18,6 +22,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.net.URL;
 import java.text.DecimalFormat;
 
 public class MainFrame extends JFrame implements ActionListener {
@@ -118,7 +123,15 @@ public class MainFrame extends JFrame implements ActionListener {
         fileMenu.add(new AbstractAction("Otevřít") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                loafFileXmlSax
+                //loafFileXmlSax
+                loadFileXmlDom4j();
+            }
+        });
+        fileMenu.add(new AbstractAction("načti json") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //loafFileXmlSax
+                loadJson();
             }
         });
         fileMenu.add(new AbstractAction("Uložit") {
@@ -137,6 +150,9 @@ public class MainFrame extends JFrame implements ActionListener {
         setJMenuBar(menuBar);
 
     }
+
+
+
 
     // Při kliknutí na jakékoliv tlačítko se zavolá tato metoda.
     // Toho jsme docílili implementování rozhraní ActionListener a nastavením tlačítek např. btnInputAdd.addActionListener(this);
@@ -269,5 +285,49 @@ public class MainFrame extends JFrame implements ActionListener {
         }
 
 
+    }
+    private void loadFileXmlDom4j() {
+        DocumentFactory df = DocumentFactory.getInstance();
+        SAXReader reader = new SAXReader(df);
+
+
+        try {
+            org.dom4j.Document doc = reader.read(new File("src/save,xml"));
+            System.out.println(doc.asXML());
+
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void loadJson() {
+        Gson gson =  new Gson();
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(10000);
+                }catch (Exception e){
+
+                }
+
+                try{
+                    //simulace dlouhé odpovědi
+
+                    ShoppingCart cart = gson.fromJson(new InputStreamReader(
+                            new URL("https://lide.uhk.cz/fim/student/benesja4/shoppingCart.json").openStream()
+                    ), ShoppingCart.class);
+                    String test= "";
+                }
+                catch (Exception e){
+
+                }
+            }
+        });
+
+        thread.start();
     }
 }
