@@ -64,7 +64,9 @@ public class FileWork {
             while ((thisLine = br.readLine()) != null) {
                 shoppingCart.addItem(new ShoppingCartItem(thisLine.split(";")[0],
                         Double.parseDouble(thisLine.split(";")[1]),
-                        Integer.parseInt(thisLine.split(";")[2])));
+                        Integer.parseInt(thisLine.split(";")[2]),
+                        Boolean.parseBoolean(thisLine.split(";")[3])
+                        ));
             }
             br.close();
 
@@ -91,7 +93,8 @@ public class FileWork {
 
             for (ShoppingCartItem item : shoppingCart.getItems()
             ) {
-                bw.write(item.getName() + ";" + item.getPricePerPiece() + ";" + item.getPieces());
+                bw.write(item.getName() + ";" + item.getPricePerPiece() + ";" + item.getPieces()
+                        + ";" + item.isBought() );
                 bw.newLine();
             }
             bw.close();

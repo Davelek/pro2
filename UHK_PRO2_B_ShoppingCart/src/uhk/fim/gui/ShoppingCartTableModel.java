@@ -3,6 +3,7 @@ package uhk.fim.gui;
 import uhk.fim.model.ShoppingCart;
 import uhk.fim.model.ShoppingCartItem;
 
+import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 
 public class ShoppingCartTableModel extends AbstractTableModel {
@@ -16,7 +17,32 @@ public class ShoppingCartTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 4;
+        return 5;
+    }
+
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        ShoppingCartItem item = shoppingCart.getItems().get(0);
+        switch (columnIndex){
+            case 0:
+                return String.class;
+            case 1:
+                return Double.class;
+            case 2:
+                return Integer.class;
+            case 3 :
+                return String.class;
+            case 4:
+                return Boolean.class;
+                default:
+                    return null;
+
+        }
+    }
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return (columnIndex == 4);
     }
 
     // Tato metoda se volá, když se tabulka dotazuje hodnotu v buňce. Tedy pro kažkou buňku.
@@ -34,6 +60,8 @@ public class ShoppingCartTableModel extends AbstractTableModel {
                 return item.getPieces();
             case 3:
                 return item.getTotalPrize() + " Kč";
+            case 4:
+                return item.isBought();
             default:
                 return null;
         }
@@ -52,6 +80,8 @@ public class ShoppingCartTableModel extends AbstractTableModel {
                 return "Počet kusů";
             case 3:
                 return "Cena celkem";
+            case 4:
+                return "Zakoupeno";
             default:
                 return null;
         }
@@ -63,6 +93,24 @@ public class ShoppingCartTableModel extends AbstractTableModel {
 
         }
     }*/
+
+
+    @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        ShoppingCartItem item = shoppingCart.getItems().get(rowIndex);
+        switch (columnIndex){
+            case 0:
+                item.setName((String) aValue);
+                break;
+            case 1:
+                item.setPricePerPiece((double) aValue);
+            case 2:
+                item.setPieces((int) aValue);
+            case 4:
+                item.setBought((boolean) aValue);
+                break;
+        }
+    }
 
     public void setShoppingCart(ShoppingCart shoppingCart) {
         this.shoppingCart = shoppingCart;
