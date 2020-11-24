@@ -44,6 +44,9 @@ public class ShoppingCart {
     public void clear(){
         items = new ArrayList<ShoppingCartItem>();
     }
+    public boolean hasItems(){
+        return items.size()>0;
+    }
 
 
 

@@ -1,6 +1,5 @@
 package uhk.fim.gui;
 
-import com.google.gson.Gson;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentFactory;
 import org.dom4j.io.SAXReader;
@@ -10,6 +9,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+import uhk.fim.fileWork.FileWork;
 import uhk.fim.model.ShoppingCart;
 import uhk.fim.model.ShoppingCartItem;
 
@@ -22,8 +22,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.net.URL;
-import java.text.DecimalFormat;
 
 public class MainFrame extends JFrame implements ActionListener {
     MainFrame mainFrame;
@@ -44,6 +42,10 @@ public class MainFrame extends JFrame implements ActionListener {
 
         // Vytvoříme košík (data)
         shoppingCart = new ShoppingCart();
+        ShoppingCart storage = FileWork.loadFileCsvStorage();
+        if (storage.hasItems()){
+            shoppingCart = storage;
+        }
         // Vytvoříme model
         shoppingCartTableModel = new ShoppingCartTableModel();
         // Propojíme model s košíkem (data)
@@ -154,7 +156,7 @@ public class MainFrame extends JFrame implements ActionListener {
         fileMenu.add(new AbstractAction("Uložit") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                saveFileCsv();
+                FileWork.saveFileCsvStorage(shoppingCart);
             }
         });
 
@@ -220,28 +222,7 @@ public class MainFrame extends JFrame implements ActionListener {
         lblTotalPrice.setText("Celková cena: " + String.format("%.2f", shoppingCart.getTotalPrice()) + " Kč");
     }
 
-    private void saveFileCsv() {
-        JFileChooser fc = new JFileChooser();
 
-        if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            String fileName = fc.getSelectedFile().getAbsolutePath();
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, true));) {
-
-                for (ShoppingCartItem item : shoppingCart.getItems()
-                ) {
-                    bw.write(item.getName() + ";" + item.getPricePerPiece() + ";" + item.getPieces());
-                    bw.newLine();
-                }
-                bw.close();
-            } catch (IOException e) {
-                JOptionPane.showMessageDialog(this, "došlo k chybě", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-
-
-        }
-
-
-    }
 
     private void loafFileXmlSax() {
         try {
