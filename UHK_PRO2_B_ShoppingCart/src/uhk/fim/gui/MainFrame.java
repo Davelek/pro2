@@ -111,12 +111,29 @@ public class MainFrame extends JFrame implements ActionListener {
         add(panelMain);
     }
 
+    private void reset(){
+        shoppingCart.clear();
+        shoppingCartTableModel.fireTableDataChanged();
+
+
+    }
+
+
     private void createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("Soubor");
         fileMenu.add(new AbstractAction("Nový nákupní seznam") {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                int dialogButton = JOptionPane.YES_NO_OPTION;
+                int dialogResult = JOptionPane.showConfirmDialog (null,
+                        "Všechny neuložený věci budou ztaceny. Chcete pokrařovat",
+                        "Warning",dialogButton);
+                if(dialogResult == JOptionPane.YES_OPTION){
+                    reset();
+                }
+
 
             }
         });
@@ -131,7 +148,7 @@ public class MainFrame extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //loafFileXmlSax
-                loadJson();
+             //   loadJson();
             }
         });
         fileMenu.add(new AbstractAction("Uložit") {
@@ -286,11 +303,9 @@ public class MainFrame extends JFrame implements ActionListener {
 
 
     }
-    private void loadFileXmlDom4j() {
+    public static void loadFileXmlDom4j() {
         DocumentFactory df = DocumentFactory.getInstance();
         SAXReader reader = new SAXReader(df);
-
-
         try {
             org.dom4j.Document doc = reader.read(new File("src/save,xml"));
             System.out.println(doc.asXML());
@@ -298,36 +313,7 @@ public class MainFrame extends JFrame implements ActionListener {
         } catch (DocumentException e) {
             e.printStackTrace();
         }
-
-
     }
 
-    private void loadJson() {
-        Gson gson =  new Gson();
 
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(10000);
-                }catch (Exception e){
-
-                }
-
-                try{
-                    //simulace dlouhé odpovědi
-
-                    ShoppingCart cart = gson.fromJson(new InputStreamReader(
-                            new URL("https://lide.uhk.cz/fim/student/benesja4/shoppingCart.json").openStream()
-                    ), ShoppingCart.class);
-                    String test= "";
-                }
-                catch (Exception e){
-
-                }
-            }
-        });
-
-        thread.start();
-    }
 }

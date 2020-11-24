@@ -41,7 +41,9 @@ public class ShoppingCart {
 
         return false;
     }*/
-
+    public void clear(){
+        items = new ArrayList<ShoppingCartItem>();
+    }
 
 
 
