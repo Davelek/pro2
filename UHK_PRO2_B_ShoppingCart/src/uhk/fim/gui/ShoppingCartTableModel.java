@@ -108,6 +108,7 @@ public class ShoppingCartTableModel extends AbstractTableModel {
                 item.setPieces((int) aValue);
             case 4:
                 item.setBought((boolean) aValue);
+
                 break;
         }
     }

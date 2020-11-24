@@ -34,6 +34,8 @@ public class MainFrame extends JFrame implements ActionListener {
     ShoppingCart shoppingCart;
     ShoppingCartTableModel shoppingCartTableModel;
     JLabel lblTotalPrice = new JLabel();
+    JLabel lbBoughtPrize = new JLabel();
+    JLabel lbDifference = new JLabel();
 
     public MainFrame(int width, int height) {
         super("PRO2 - Shopping cart");
@@ -92,10 +94,13 @@ public class MainFrame extends JFrame implements ActionListener {
         panelInputs.add(lblInputPieces);
         panelInputs.add(spInputPieces);
         panelInputs.add(btnInputAdd);
+        lbBoughtPrize.setHorizontalAlignment(JLabel.CENTER);
 
         // *** Patička ***
         updateFooter();
         panelFooter.add(lblTotalPrice, BorderLayout.WEST);
+        panelFooter.add(lbBoughtPrize, BorderLayout.CENTER);
+        panelFooter.add(lbDifference, BorderLayout.EAST);
 
         // *** Tabulka ***
         JTable table = new JTable();
@@ -111,6 +116,22 @@ public class MainFrame extends JFrame implements ActionListener {
 
         // Přidání hlavního panelu do MainFrame (JFrame)
         add(panelMain);
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true){
+                    try {
+                        //asi to není hezký řešení, ale nějak mi nenapadá jak to udělat jinak, než kontrolovat změnu isBought
+                        updateFooter();
+                    }catch (Exception e){
+
+                    }
+
+                }
+            }
+        });
+        thread.start();
     }
 
     private void reset() {
@@ -226,6 +247,15 @@ public class MainFrame extends JFrame implements ActionListener {
         // DecimalFormat f = new DecimalFormat("##.00");
         // f.format(shoppingCart.getTotalPrice())
         lblTotalPrice.setText("Celková cena: " + String.format("%.2f", shoppingCart.getTotalPrice()) + " Kč");
+        double boughtPrize = 0;
+        for (ShoppingCartItem item: shoppingCart.getItems()
+             ) {
+            if (item.isBought()){
+                boughtPrize += item.getTotalPrize();
+            }
+        }
+        lbBoughtPrize.setText("Cena zakoupených: " + String.format("%.2f", boughtPrize) + " Kč");
+        lbDifference.setText("Rozdíl: " + String.format("%.2f",shoppingCart.getTotalPrice() - boughtPrize) + " kč");
     }
 
 
