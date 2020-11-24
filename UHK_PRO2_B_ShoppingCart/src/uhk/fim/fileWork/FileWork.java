@@ -86,6 +86,8 @@ public class FileWork {
                     bw.newLine();
                 }
                 bw.close();
+                JOptionPane.showMessageDialog(null, "Úspěšně uloženo", "Úspěch", JOptionPane.INFORMATION_MESSAGE);
+
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "došlo k chybě", "Error", JOptionPane.ERROR_MESSAGE);
             }
