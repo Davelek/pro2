@@ -43,7 +43,7 @@ public class MainFrame extends JFrame implements ActionListener {
         // Vytvoříme košík (data)
         shoppingCart = new ShoppingCart();
         ShoppingCart storage = FileWork.loadFileCsvStorage();
-        if (storage.hasItems()){
+        if (storage.hasItems()) {
             shoppingCart = storage;
         }
         // Vytvoříme model
@@ -113,7 +113,7 @@ public class MainFrame extends JFrame implements ActionListener {
         add(panelMain);
     }
 
-    private void reset(){
+    private void reset() {
         shoppingCart.clear();
         shoppingCartTableModel.fireTableDataChanged();
 
@@ -129,10 +129,10 @@ public class MainFrame extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
 
                 int dialogButton = JOptionPane.YES_NO_OPTION;
-                int dialogResult = JOptionPane.showConfirmDialog (null,
+                int dialogResult = JOptionPane.showConfirmDialog(null,
                         "Všechny neuložený věci budou ztaceny. Chcete pokrařovat",
-                        "Warning",dialogButton);
-                if(dialogResult == JOptionPane.YES_OPTION){
+                        "Warning", dialogButton);
+                if (dialogResult == JOptionPane.YES_OPTION) {
                     reset();
                 }
 
@@ -143,14 +143,22 @@ public class MainFrame extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //loafFileXmlSax
-                loadFileXmlDom4j();
+                ShoppingCart cart = FileWork.openFileDialog();
+                if (cart.hasItems()) {
+                    //    System.out.println("jsme tu");
+                    shoppingCart = cart;
+                    shoppingCartTableModel.setShoppingCart(shoppingCart);
+                    shoppingCartTableModel.fireTableDataChanged();
+
+                }
             }
         });
-        fileMenu.add(new AbstractAction("načti json") {
+        fileMenu.add(new AbstractAction("Uložit jako") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //loafFileXmlSax
-             //   loadJson();
+                //   loadJson();
+                FileWork.saveFileDialog(shoppingCart);
             }
         });
         fileMenu.add(new AbstractAction("Uložit") {
@@ -169,8 +177,6 @@ public class MainFrame extends JFrame implements ActionListener {
         setJMenuBar(menuBar);
 
     }
-
-
 
 
     // Při kliknutí na jakékoliv tlačítko se zavolá tato metoda.
@@ -223,7 +229,6 @@ public class MainFrame extends JFrame implements ActionListener {
     }
 
 
-
     private void loafFileXmlSax() {
         try {
             CharArrayWriter content = new CharArrayWriter();
@@ -264,18 +269,16 @@ public class MainFrame extends JFrame implements ActionListener {
             Document document = builder.parse(new File("src/uhk/fim/save.xml"));
             Node root = document.getFirstChild();
             short nodeType = root.getNodeType();
-            if (root.hasChildNodes()){
+            if (root.hasChildNodes()) {
                 NodeList list = root.getChildNodes();
                 for (int i = 0; i < list.getLength(); i++) {
                     Node nextNode = list.item(i);
-                    if (root.hasChildNodes()){
+                    if (root.hasChildNodes()) {
 
                     }
-                    
+
                 }
             }
-
-
 
 
         } catch (Exception e) {
@@ -284,6 +287,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
 
     }
+
     public static void loadFileXmlDom4j() {
         DocumentFactory df = DocumentFactory.getInstance();
         SAXReader reader = new SAXReader(df);
