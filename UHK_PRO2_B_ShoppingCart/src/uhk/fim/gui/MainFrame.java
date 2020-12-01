@@ -124,6 +124,8 @@ public class MainFrame extends JFrame implements ActionListener {
                     try {
                         //asi to není hezký řešení, ale nějak mi nenapadá jak to udělat jinak, než kontrolovat změnu isBought
                         updateFooter();
+                        deleteItem();
+
                     }catch (Exception e){
 
                     }
@@ -239,6 +241,14 @@ public class MainFrame extends JFrame implements ActionListener {
         // Refreshnout tabulku
         shoppingCartTableModel.fireTableDataChanged();
         JOptionPane.showMessageDialog(mainFrame, "Super! Přidáno.", "Úspěch", JOptionPane.INFORMATION_MESSAGE);
+    }
+    private void deleteItem(){
+        for (int i = 0; i < shoppingCart.getItems().size(); i++) {
+            if (shoppingCart.getItems().get(i).isDelete()){
+                shoppingCart.getItems().remove(i);
+            }
+        }
+
     }
 
     private void updateFooter() {

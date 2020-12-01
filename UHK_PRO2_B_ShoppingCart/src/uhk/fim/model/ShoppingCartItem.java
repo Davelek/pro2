@@ -5,6 +5,7 @@ public class ShoppingCartItem {
     private double pricePerPiece;
     private int pieces;
     private boolean bought;
+    private boolean delete = false;
 
 
     public ShoppingCartItem(String name, double pricePerPiece, int pieces) {
@@ -20,6 +21,14 @@ public class ShoppingCartItem {
         this.pricePerPiece = pricePerPiece;
         this.pieces = pieces;
         this.bought = bought;
+    }
+
+    public boolean isDelete() {
+        return delete;
+    }
+
+    public void setDelete(boolean delete) {
+        this.delete = delete;
     }
 
     public boolean isBought() {

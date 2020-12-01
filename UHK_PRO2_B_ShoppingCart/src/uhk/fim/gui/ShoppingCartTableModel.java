@@ -17,7 +17,7 @@ public class ShoppingCartTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 5;
+        return 6;
     }
 
     @Override
@@ -34,6 +34,9 @@ public class ShoppingCartTableModel extends AbstractTableModel {
                 return String.class;
             case 4:
                 return Boolean.class;
+            case 5:
+                return Boolean.class;
+
                 default:
                     return null;
 
@@ -42,7 +45,7 @@ public class ShoppingCartTableModel extends AbstractTableModel {
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return (columnIndex == 4);
+        return (columnIndex == 4 || columnIndex == 5);
     }
 
     // Tato metoda se volá, když se tabulka dotazuje hodnotu v buňce. Tedy pro kažkou buňku.
@@ -62,6 +65,8 @@ public class ShoppingCartTableModel extends AbstractTableModel {
                 return item.getTotalPrize() + " Kč";
             case 4:
                 return item.isBought();
+            case 5:
+                return item.isDelete();
             default:
                 return null;
         }
@@ -82,6 +87,8 @@ public class ShoppingCartTableModel extends AbstractTableModel {
                 return "Cena celkem";
             case 4:
                 return "Zakoupeno";
+            case 5:
+                return "Odstranit";
             default:
                 return null;
         }
@@ -104,12 +111,17 @@ public class ShoppingCartTableModel extends AbstractTableModel {
                 break;
             case 1:
                 item.setPricePerPiece((double) aValue);
+                break;
             case 2:
                 item.setPieces((int) aValue);
+                break;
             case 4:
                 item.setBought((boolean) aValue);
 
+
                 break;
+            case 5:
+                item.setDelete((boolean) aValue);
         }
     }
 
