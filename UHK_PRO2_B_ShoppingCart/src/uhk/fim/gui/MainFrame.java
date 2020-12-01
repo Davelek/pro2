@@ -126,6 +126,7 @@ public class MainFrame extends JFrame implements ActionListener {
                         updateFooter();
                         deleteItem();
 
+
                     }catch (Exception e){
 
                     }
@@ -245,7 +246,17 @@ public class MainFrame extends JFrame implements ActionListener {
     private void deleteItem(){
         for (int i = 0; i < shoppingCart.getItems().size(); i++) {
             if (shoppingCart.getItems().get(i).isDelete()){
-                shoppingCart.getItems().remove(i);
+                int dialogButton = JOptionPane.YES_NO_OPTION;
+                int dialogResult = JOptionPane.showConfirmDialog(null,
+                        "Chcete odstranit položku?",
+                        "Warning", dialogButton);
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    shoppingCart.getItems().remove(i);
+                }
+                if (dialogResult == JOptionPane.NO_OPTION){
+                    shoppingCart.getItems().get(i).setDelete(false);
+                }
+
             }
         }
 
