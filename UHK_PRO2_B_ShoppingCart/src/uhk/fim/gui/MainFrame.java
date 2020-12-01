@@ -59,7 +59,11 @@ public class MainFrame extends JFrame implements ActionListener {
     public void initGUI() {
         // Vytvoříme hlavní panel, do kterého budeme přidávat další (pod)panely.
         // Naším cílem při tvorbě GUI, je snaha jednotlivé komponenty zanořovat.
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/uhk/fim/img/cart.png")));
+
+
         JPanel panelMain = new JPanel(new BorderLayout());
+
 
         //menubar
 
@@ -70,6 +74,9 @@ public class MainFrame extends JFrame implements ActionListener {
         JPanel panelInputs = new JPanel(new FlowLayout(FlowLayout.LEFT)); // FlowLayout LEFT - komponenty chceme zarovnat zleva doprava.
         JPanel panelTable = new JPanel(new BorderLayout());
         JPanel panelFooter = new JPanel(new BorderLayout());
+        panelInputs.setBackground(new Color(0xFFF2C6));
+
+        panelFooter.setBackground(new Color(0x66FF66));
 
         // *** Formulář pro přidání položky ***
         // Název
@@ -83,7 +90,8 @@ public class MainFrame extends JFrame implements ActionListener {
         spInputPieces = new JSpinner(new SpinnerNumberModel(1, 1, 999, 1));
 
         // Tlačítka
-        btnInputAdd = new JButton("Přidat");
+        btnInputAdd = new JButton("Přidat" , new ImageIcon(getClass().getResource("/uhk/fim/img/add.gif")));
+
         btnInputAdd.addActionListener(this); // Nastavení ActionListeneru - kdo obslouží kliknutí na tlačítko.
 
         // Přidání komponent do horního panelu pro formulář na přidání položky
@@ -106,6 +114,7 @@ public class MainFrame extends JFrame implements ActionListener {
         JTable table = new JTable();
         // Tabulku propojíme s naším modelem
         table.setModel(shoppingCartTableModel);
+
         // Tabulku přidáme do panelu a obalíme ji komponentou JScrollPane
         panelTable.add(new JScrollPane(table), BorderLayout.CENTER);
 
@@ -148,7 +157,7 @@ public class MainFrame extends JFrame implements ActionListener {
     private void createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("Soubor");
-        fileMenu.add(new AbstractAction("Nový nákupní seznam") {
+        fileMenu.add(new AbstractAction("Nový nákupní seznam", new ImageIcon(getClass().getResource("/uhk/fim/img/new.gif"))) {
             @Override
             public void actionPerformed(ActionEvent e) {
 
@@ -163,7 +172,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
             }
         });
-        fileMenu.add(new AbstractAction("Otevřít") {
+        fileMenu.add(new AbstractAction("Otevřít" , new ImageIcon(getClass().getResource("/uhk/fim/img/open.gif"))) {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //loafFileXmlSax
@@ -177,7 +186,7 @@ public class MainFrame extends JFrame implements ActionListener {
                 }
             }
         });
-        fileMenu.add(new AbstractAction("Uložit jako") {
+        fileMenu.add(new AbstractAction("Uložit jako" , new ImageIcon(getClass().getResource("/uhk/fim/img/save.gif"))) {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //loafFileXmlSax
@@ -185,7 +194,7 @@ public class MainFrame extends JFrame implements ActionListener {
                 FileWork.saveFileDialog(shoppingCart);
             }
         });
-        fileMenu.add(new AbstractAction("Uložit") {
+        fileMenu.add(new AbstractAction("Uložit" , new ImageIcon(getClass().getResource("/uhk/fim/img/save.gif"))) {
             @Override
             public void actionPerformed(ActionEvent e) {
                 FileWork.saveFileCsvStorage(shoppingCart);
@@ -194,7 +203,20 @@ public class MainFrame extends JFrame implements ActionListener {
 
         menuBar.add(fileMenu);
 
-        JMenu aboutMenu = new JMenu("O programu");
+        JMenu aboutMenu = new JMenu("Other");
+        aboutMenu.add(new AbstractAction("O pragramu" , new ImageIcon(getClass().getResource("/uhk/fim/img/about.gif"))) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null,
+                        "K O Š Í K\n(C)David Mašek, FIM UHK",
+                        "O programu",
+                        JOptionPane.INFORMATION_MESSAGE + JOptionPane.OK_OPTION,
+                        new ImageIcon(getClass().getResource("/uhk/fim/img/uhk-fim-logo.png"))
+
+                );
+            }
+        });
+
         menuBar.add(aboutMenu);
 
 
